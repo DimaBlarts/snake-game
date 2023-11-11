@@ -7,20 +7,21 @@
   <style>
     body {
       margin: 0;
-      overflow: hidden; /* Чтобы избежать скроллинга на мобильных устройствах */
+      overflow: hidden;
     }
     #game-container {
       display: grid;
-      grid-template-columns: repeat(15, 1fr); /* Изменим размер поля на 15 ячеек вместо 25 */
+      grid-template-columns: repeat(15, 1fr);
       grid-template-rows: repeat(15, 1fr);
-      width: 100vw; /* Заполняем всю ширину видимой области */
-      height: 100vh; /* Заполняем всю высоту видимой области */
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
     }
     .cell {
-      width: calc(100% / 15); /* Рассчитываем ширину ячейки относительно размера поля */
-      height: calc(100% / 15); /* Рассчитываем высоту ячейки относительно размера поля */
-      border: 1px solid #ccc;
+      width: calc(100% / 15);
+      height: calc(100% / 15);
       box-sizing: border-box;
+      position: relative;
     }
   </style>
 </head>
