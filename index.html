@@ -5,14 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Змейка</title>
   <style>
+    body {
+      margin: 0;
+      overflow: hidden; /* Чтобы избежать скроллинга на мобильных устройствах */
+    }
     #game-container {
       display: grid;
-      grid-template-columns: repeat(25, 20px);
-      grid-template-rows: repeat(25, 20px);
+      grid-template-columns: repeat(15, 1fr); /* Изменим размер поля на 15 ячеек вместо 25 */
+      grid-template-rows: repeat(15, 1fr);
+      width: 100vw; /* Заполняем всю ширину видимой области */
+      height: 100vh; /* Заполняем всю высоту видимой области */
     }
     .cell {
-      width: 20px;
-      height: 20px;
+      width: calc(100% / 15); /* Рассчитываем ширину ячейки относительно размера поля */
+      height: calc(100% / 15); /* Рассчитываем высоту ячейки относительно размера поля */
       border: 1px solid #ccc;
       box-sizing: border-box;
     }
