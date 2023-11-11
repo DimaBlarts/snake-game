@@ -293,14 +293,19 @@ function stopGame() {
   clearInterval(foodInterval);
 }
 
+// ...
+
 function renderGrid() {
   const gameContainer = document.getElementById('game-container');
   gameContainer.innerHTML = '';
 
-  grid.forEach(row => {
-    row.forEach(cell => {
+  grid.forEach((row, rowIndex) => {
+    row.forEach((cell, colIndex) => {
       const cellElement = document.createElement('div');
       cellElement.classList.add('cell');
+      cellElement.style.width = `${cellSize}px`;
+      cellElement.style.height = `${cellSize}px`;
+
       switch (cell) {
         case 1:
           cellElement.style.backgroundColor = 'green'; // Тело змейки
@@ -318,6 +323,7 @@ function renderGrid() {
           cellElement.style.backgroundColor = 'yellow'; // Лазер
           break;
       }
+
       gameContainer.appendChild(cellElement);
     });
   });
@@ -326,11 +332,16 @@ function renderGrid() {
   snake.forEach(segment => {
     const cellElement = document.createElement('div');
     cellElement.classList.add('cell');
+    cellElement.style.width = `${cellSize}px`;
+    cellElement.style.height = `${cellSize}px`;
     cellElement.style.backgroundColor = 'green'; // Цвет тела змейки
-    const x = segment.x * (100 / gridSize); // Преобразование координаты x
-    const y = segment.y * (100 / gridSize); // Преобразование координаты y
-    cellElement.style.left = `${x}%`;
-    cellElement.style.top = `${y}%`;
+
+    // Преобразование координаты x и y для увеличенного размера
+    const x = segment.x * cellSize;
+    const y = segment.y * cellSize;
+
+    cellElement.style.left = `${x}px`;
+    cellElement.style.top = `${y}px`;
     gameContainer.appendChild(cellElement);
   });
 }
