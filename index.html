@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Змейка</title>
+  <style>
+    #game-container {
+      display: grid;
+      grid-template-columns: repeat(25, 20px);
+      grid-template-rows: repeat(25, 20px);
+    }
+    .cell {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container"></div>
+  <script src="snake.js"></script>
+</body>
+</html>
