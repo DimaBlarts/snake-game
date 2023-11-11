@@ -321,6 +321,18 @@ function renderGrid() {
       gameContainer.appendChild(cellElement);
     });
   });
+
+  // Внесем изменения для отображения змейки
+  snake.forEach(segment => {
+    const cellElement = document.createElement('div');
+    cellElement.classList.add('cell');
+    cellElement.style.backgroundColor = 'green'; // Цвет тела змейки
+    const x = segment.x * (100 / gridSize); // Преобразование координаты x
+    const y = segment.y * (100 / gridSize); // Преобразование координаты y
+    cellElement.style.left = `${x}%`;
+    cellElement.style.top = `${y}%`;
+    gameContainer.appendChild(cellElement);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
