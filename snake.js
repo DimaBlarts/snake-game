@@ -1,6 +1,7 @@
-const grid = Array.from({ length: 25 }, () => Array(25).fill(0));
+const gridSize = 15; // Увеличиваем размер сетки
+const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(0));
 
-let snake = [{ x: 12, y: 12 }];
+let snake = [{ x: Math.floor(gridSize / 2), y: Math.floor(gridSize / 2) }];
 let food = generateFood();
 let obstacles = [];
 let lasers = [];
@@ -12,13 +13,13 @@ let isTurning = false;
 let isAccelerated = false; // Флаг для отслеживания ускорения
 let foodInterval;
 
-const snakeSpeed = 200;
-const acceleratedSnakeSpeed = snakeSpeed / 3; // Скорость змейки при ускорении
-const laserSpeed = 100;
+const snakeSpeed = 300; // Уменьшаем скорость змейки
+const acceleratedSnakeSpeed = snakeSpeed / 2; // Скорость змейки при ускорении
+const laserSpeed = 150; // Уменьшаем скорость лазера
 
 function generateFood() {
-  const x = Math.floor(Math.random() * 25);
-  const y = Math.floor(Math.random() * 25);
+  const x = Math.floor(Math.random() * gridSize);
+  const y = Math.floor(Math.random() * gridSize);
   return { x, y };
 }
 
