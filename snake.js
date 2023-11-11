@@ -13,7 +13,8 @@ let isTurning = false;
 let isAccelerated = false; // Флаг для отслеживания ускорения
 let foodInterval;
 
-const snakeSpeed = 300; // Уменьшаем скорость змейки
+const initialSnakeSpeed = 300;
+let snakeSpeed = initialSnakeSpeed; // Исходная скорость змейки
 const acceleratedSnakeSpeed = snakeSpeed / 2; // Скорость змейки при ускорении
 const laserSpeed = 150; // Уменьшаем скорость лазера
 
@@ -50,18 +51,26 @@ function moveSnake() {
 
     switch (nextCommand) {
       case 'w':
-        direction = 'up';
+        if (direction !== 'down') {
+          direction = 'up';
+        }
         break;
       case 's':
-        direction = 'down';
+        if (direction !== 'up') {
+          direction = 'down';
+        }
         break;
       case 'a':
-        direction = 'left';
+        if (direction !== 'right') {
+          direction = 'left';
+        }
         break;
       case 'd':
-        direction = 'right';
+        if (direction !== 'left') {
+          direction = 'right';
+        }
         break;
-      case ' ': // Пробел
+      case ' ':
         shootLaser();
         break;
     }
@@ -102,8 +111,8 @@ function moveSnake() {
 }
 
 function generateObstacle() {
-  const x = Math.floor(Math.random() * 25);
-  const y = Math.floor(Math.random() * 25);
+  const x = Math.floor(Math.random() * gridSize);
+  const y = Math.floor(Math.random() * gridSize);
   return { x, y };
 }
 
@@ -157,13 +166,13 @@ function moveLasers() {
   });
 
   // Удаляем снаряды, вышедшие за границы
-  lasers = lasers.filter(laser => laser.x >= 0 && laser.x < 25 && laser.y >= 0 && laser.y < 25);
+  lasers = lasers.filter(laser => laser.x >= 0 && laser.x < gridSize && laser.y >= 0 && laser.y < gridSize);
 }
 
 function checkCollision() {
   const head = snake[0];
   if (
-    head.x < 0 || head.x >= 25 || head.y < 0 || head.y >= 25 ||
+    head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize ||
     grid[head.y][head.x] === 1 || grid[head.y][head.x] === 4
   ) {
     return true;
@@ -179,30 +188,39 @@ document.addEventListener('touchstart', handleTouchStart);
 document.addEventListener('touchend', handleTouchEnd);
 
 function handleKeyDown(event) {
-  switch (event.key) {
-    case 'w':
-      direction = 'up';
-      break;
-    case 's':
-      direction = 'down';
-      break;
-    case 'a':
-      direction = 'left';
-      break;
-    case 'd':
-      direction = 'right';
-      break;
-    case 'Shift':
-      isAccelerated = !isAccelerated; // Переключение ускорения при нажатии на Shift
-      break;
-    case ' ':
-      shootLaser();
-      break;
+  if (!isTurning) {
+    isTurning = true;
+    switch (event.key) {
+      case 'w':
+        if (direction !== 'down') {
+          direction = 'up';
+        }
+        break;
+      case 's':
+        if (direction !== 'up') {
+          direction = 'down';
+        }
+        break;
+      case 'a':
+        if (direction !== 'right') {
+          direction = 'left';
+        }
+        break;
+      case 'd':
+        if (direction !== 'left') {
+          direction = 'right';
+        }
+        break;
+      case ' ':
+        shootLaser();
+        break;
+    }
   }
 }
 
 let touchStartY = 0;
 let touchStartX = 0;
+let lastTap = 0;
 
 function handleTouchStart(event) {
   touchStartY = event.touches[0].clientY;
@@ -216,25 +234,35 @@ function handleTouchEnd(event) {
   const deltaY = touchEndY - touchStartY;
   const deltaX = touchEndX - touchStartX;
 
-  if (Math.abs(deltaY) > Math.abs(deltaX)) {
-    // По вертикали
-    if (deltaY > 0) {
-      // Вниз
-      direction = 'down';
-    } else {
-      // Вверх
-      direction = 'up';
-    }
+  const currentTime = new Date().getTime();
+  const tapInterval = currentTime - lastTap;
+
+  if (tapInterval < 300) {
+    // Если прошло менее 300 миллисекунд, считаем это двойным тапом
+    isAccelerated = !isAccelerated;
   } else {
-    // По горизонтали
-    if (deltaX > 0) {
-      // Вправо
-      direction = 'right';
+    if (Math.abs(deltaY) > Math.abs(deltaX)) {
+      // По вертикали
+      if (deltaY > 0) {
+        // Вниз
+        direction = 'down';
+      } else {
+        // Вверх
+        direction = 'up';
+      }
     } else {
-      // Влево
-      direction = 'left';
+      // По горизонтали
+      if (deltaX > 0) {
+        // Вправо
+        direction = 'right';
+      } else {
+        // Влево
+        direction = 'left';
+      }
     }
   }
+
+  lastTap = currentTime;
 }
 
 function gameLoop() {
