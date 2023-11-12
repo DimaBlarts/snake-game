@@ -1,5 +1,7 @@
 const gridSize = 15; // Увеличиваем размер сетки
 const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(0));
+const cellSize = 20; // Размер каждой ячейки в пикселях
+
 
 let snake = [{ x: Math.floor(gridSize / 2), y: Math.floor(gridSize / 2) }];
 let food = generateFood();
@@ -295,6 +297,10 @@ function stopGame() {
 
 // ...
 
+document.addEventListener('DOMContentLoaded', () => {
+  startGame();
+});
+
 function renderGrid() {
   const gameContainer = document.getElementById('game-container');
   gameContainer.innerHTML = '';
@@ -308,19 +314,19 @@ function renderGrid() {
 
       switch (cell) {
         case 1:
-          cellElement.style.backgroundColor = 'green'; // Тело змейки
+          cellElement.classList.add('snake'); // Добавляем класс для тела змейки
           break;
         case 2:
-          cellElement.style.backgroundColor = 'blue'; // Голова змейки
+          cellElement.classList.add('head'); // Добавляем класс для головы змейки
           break;
         case 3:
-          cellElement.style.backgroundColor = 'red'; // Еда
+          cellElement.classList.add('food'); // Добавляем класс для еды
           break;
         case 4:
-          cellElement.style.backgroundColor = 'black'; // Препятствие
+          cellElement.classList.add('obstacle'); // Добавляем класс для препятствия
           break;
         case 5:
-          cellElement.style.backgroundColor = 'yellow'; // Лазер
+          cellElement.classList.add('laser'); // Добавляем класс для лазера
           break;
       }
 
@@ -328,13 +334,12 @@ function renderGrid() {
     });
   });
 
-  // Внесем изменения для отображения змейки
+  // Отображаем змейку
   snake.forEach(segment => {
     const cellElement = document.createElement('div');
-    cellElement.classList.add('cell');
+    cellElement.classList.add('cell', 'snake');
     cellElement.style.width = `${cellSize}px`;
     cellElement.style.height = `${cellSize}px`;
-    cellElement.style.backgroundColor = 'green'; // Цвет тела змейки
 
     // Преобразование координаты x и y для увеличенного размера
     const x = segment.x * cellSize;
@@ -345,6 +350,7 @@ function renderGrid() {
     gameContainer.appendChild(cellElement);
   });
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
   startGame();
