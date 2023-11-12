@@ -1,0 +1,36 @@
+/* styles.css */
+
+#game-container {
+    display: grid;
+    grid-template-columns: repeat(15, 20px);
+    grid-template-rows: repeat(15, 20px);
+    gap: 1px;
+  }
+  
+  .cell {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
+  .cell.snake {
+    background-color: green;
+  }
+  
+  .cell.head {
+    background-color: blue;
+  }
+  
+  .cell.food {
+    background-color: red;
+  }
+  
+  .cell.obstacle {
+    background-color: black;
+  }
+  
+  .cell.laser {
+    background-color: yellow;
+  }
+  
